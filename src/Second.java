@@ -15,7 +15,7 @@ public class Second {
     private static final File file = new File(fileName);
 
     public static List<String> pop(String key, Jedis jedis) {
-        return jedis.brpop(timeout, key);
+        return jedis.brpop(timeout, key);//sadly timeout is ignored by library :(
     }
 
     public static void push(String key, String value, Jedis jedis) {
