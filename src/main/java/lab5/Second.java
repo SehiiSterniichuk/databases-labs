@@ -1,3 +1,5 @@
+package lab5;
+
 import redis.clients.jedis.Jedis;
 
 import java.io.File;
