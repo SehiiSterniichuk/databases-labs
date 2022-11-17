@@ -7,14 +7,14 @@ public class MyTable {
     private final TableName tableName;
     private final Connection connection;
 
-    public MyTable(TableName tableName, Connection connection, String... families) {
+    public MyTable(Connection connection, TableName tableName, String... families) {
         this.tableName = tableName;
         this.connection = connection;
         Tables.createTable(tableName, families);
     }
 
-    public MyTable(String tableName, Connection connection, String... families) {
-        this(TableName.valueOf(tableName), connection);
+    public MyTable(Connection connection, String tableName, String... families) {
+        this(connection, TableName.valueOf(tableName), families);
     }
 
     public String scan() {

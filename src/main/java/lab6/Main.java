@@ -7,10 +7,20 @@ import org.apache.hadoop.hbase.client.ConnectionFactory;
 
 import java.io.IOException;
 
+/*
+* Встановіть бібліотеку мови програмування на ваш вибір і реалізуйте
+функції:
+* створення тестових двох таблиць і двох сімейств стовпців;
+* дозаписування даних у дві таблиці;
+* зчитування даних з двох таблиць;
+* оновлення даних у двох таблицях;
+* видалення даних з двох таблиць;
+* видалення таблиць.
+* */
 public class Main {
 
-    public static final String WORKER = "worker";
-    public static final String STUDENT = "student";
+    public static final String WORKER_NAME = "worker";
+    public static final String STUDENT_NAME = "student";
     public static final String PERSONAL_DATA = "Personal data";
     public static final String PROFESSIONAL_DATA = "Professional data";
     public static final String EDUCATION_DATA = "Education data";
@@ -26,6 +36,11 @@ public class Main {
     public static void main(String[] args) {
         Configuration config = HBaseConfiguration.create();
         try (Connection connection = ConnectionFactory.createConnection(config)) {
+//          * створення тестових двох таблиць і двох сімейств стовпців;
+            MyTable worker = new MyTable(connection, WORKER_NAME, FAMILIES_OF_WORKER);
+            MyTable student = new MyTable(connection, STUDENT_NAME, FAMILIES_OF_STUDENT);
+//          * дозаписування даних у дві таблиці;
+//            worker
 
         } catch (IOException ex) {
             ex.printStackTrace();
