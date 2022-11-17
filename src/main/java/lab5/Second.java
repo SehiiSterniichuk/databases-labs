@@ -11,7 +11,7 @@ public class Second {
     private static final String key = "MyQueue";
     private static final String host = "localhost";
     private static final int port = 6379;
-    private static final int timeout = 25;
+    private static final int timeout = 0;
     private static final FileManager fileManager = new FileManager();
 
     private static final File file = new File(fileName);
