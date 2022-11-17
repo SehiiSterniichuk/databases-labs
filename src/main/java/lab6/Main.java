@@ -49,7 +49,7 @@ public class Main {
 
             final String countStudent = String.valueOf(student.count() + 1);
             student.put(countStudent, PERSONAL_DATA, NAME, rand.getRandomName());
-            student.put(countStudent, PERSONAL_DATA, AGE, rand.getRandomWorkerAge());
+            student.put(countStudent, PERSONAL_DATA, AGE, rand.getRandomStudentAge());
             student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, rand.getRandomAverageGrade());
             student.put(countStudent, EDUCATION_DATA, BEST_SUBJECT, rand.getRandomSubject());
 

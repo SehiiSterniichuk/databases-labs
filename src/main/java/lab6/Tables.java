@@ -132,21 +132,15 @@ public class Tables {
         return builder;
     }
 
-    public static TableDescriptor createTableDescriptor(final String tableName) {
-        return createTableDescriptor(TableName.valueOf(tableName));
-    }
-
-    public static TableDescriptor createTableDescriptor(final TableName tableName) {
+    public static TableDescriptor createTableDescriptor(final TableName tableName, final String... families) {
         TableDescriptorBuilder tableBuilder = TableDescriptorBuilder.newBuilder(tableName);
-        return tableBuilder.build();
+        return createTableDescriptor(tableBuilder, families);
     }
 
-    public static TableDescriptor addFamilies(final TableName tableName, final String... families) {
-        TableDescriptorBuilder tableBuilder = TableDescriptorBuilder.newBuilder(tableName);
-        return addFamilies(tableBuilder, families);
-    }
-
-    public static TableDescriptor addFamilies(TableDescriptorBuilder tableBuilder, final String... families){
+    public static TableDescriptor createTableDescriptor(TableDescriptorBuilder tableBuilder, final String... families){
+        if(families.length == 0){
+            throw new IllegalArgumentException("Table must have at least one column family! Your family list is empty.");
+        }
         for (var family : families) {
             ColumnFamilyDescriptor familyDescriptor = ColumnFamilyDescriptorBuilder.of(Bytes.toBytes(family));
             tableBuilder.setColumnFamily(familyDescriptor);

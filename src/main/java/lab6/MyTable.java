@@ -14,8 +14,7 @@ public class MyTable {
     public MyTable(Connection connection, TableName tableName, String... families) {
         this.tableName = tableName;
         this.connection = connection;
-//        TableDescriptor tableDescriptor = Tables.createTableDescriptor(tableName);
-        TableDescriptor tableDescriptor = Tables.addFamilies(tableName, families);
+        TableDescriptor tableDescriptor = Tables.createTableDescriptor(tableName, families);
         try {
             Admin admin = connection.getAdmin();
             if(!admin.tableExists(tableName)){
