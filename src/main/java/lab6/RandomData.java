@@ -63,4 +63,8 @@ public class RandomData {
         return POSITIONS[index];
     }
 
+    public String getRandomAverageGrade(){
+        return String.valueOf(60 + rand.nextInt(41));
+    }
+
 }

@@ -1,8 +1,11 @@
 package lab6;
 
 import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.TableDescriptor;
+
+import java.io.IOException;
 
 public class MyTable {
     private final TableName tableName;
@@ -11,7 +14,16 @@ public class MyTable {
     public MyTable(Connection connection, TableName tableName, String... families) {
         this.tableName = tableName;
         this.connection = connection;
-        TableDescriptor table = Tables.createTable(tableName, families);
+//        TableDescriptor tableDescriptor = Tables.createTableDescriptor(tableName);
+        TableDescriptor tableDescriptor = Tables.addFamilies(tableName, families);
+        try {
+            Admin admin = connection.getAdmin();
+            if(!admin.tableExists(tableName)){
+                admin.createTable(tableDescriptor);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public MyTable(Connection connection, String tableName, String... families) {

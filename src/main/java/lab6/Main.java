@@ -45,7 +45,14 @@ public class Main {
             worker.put(countWorker, PERSONAL_DATA, NAME, rand.getRandomName());
             worker.put(countWorker, PERSONAL_DATA, AGE, rand.getRandomWorkerAge());
             worker.put(countWorker, PROFESSIONAL_DATA, SALARY, rand.getRandomWorkerSalary());
-            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, rand.getRandomWorkerPosition());
+            worker.put(countWorker, PROFESSIONAL_DATA, POSITION, rand.getRandomWorkerPosition());
+
+            final String countStudent = String.valueOf(student.count() + 1);
+            student.put(countStudent, PERSONAL_DATA, NAME, rand.getRandomName());
+            student.put(countStudent, PERSONAL_DATA, AGE, rand.getRandomWorkerAge());
+            student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, rand.getRandomAverageGrade());
+            student.put(countStudent, EDUCATION_DATA, BEST_SUBJECT, rand.getRandomSubject());
+
 
         } catch (IOException ex) {
             ex.printStackTrace();

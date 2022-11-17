@@ -132,18 +132,25 @@ public class Tables {
         return builder;
     }
 
-    public static TableDescriptor createTable(final String tableName, final String... families) {
-        return createTable(TableName.valueOf(tableName), families);
+    public static TableDescriptor createTableDescriptor(final String tableName) {
+        return createTableDescriptor(TableName.valueOf(tableName));
     }
 
-    public static TableDescriptor createTable(final TableName tableName, final String... families) {
+    public static TableDescriptor createTableDescriptor(final TableName tableName) {
         TableDescriptorBuilder tableBuilder = TableDescriptorBuilder.newBuilder(tableName);
+        return tableBuilder.build();
+    }
+
+    public static TableDescriptor addFamilies(final TableName tableName, final String... families) {
+        TableDescriptorBuilder tableBuilder = TableDescriptorBuilder.newBuilder(tableName);
+        return addFamilies(tableBuilder, families);
+    }
+
+    public static TableDescriptor addFamilies(TableDescriptorBuilder tableBuilder, final String... families){
         for (var family : families) {
             ColumnFamilyDescriptor familyDescriptor = ColumnFamilyDescriptorBuilder.of(Bytes.toBytes(family));
             tableBuilder.setColumnFamily(familyDescriptor);
         }
         return tableBuilder.build();
     }
-
-
 }
