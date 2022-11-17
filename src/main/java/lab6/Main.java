@@ -32,6 +32,7 @@ public class Main {
     public static final String BEST_SUBJECT = "best subject";
     public static final String[] FAMILIES_OF_WORKER = {PERSONAL_DATA, PROFESSIONAL_DATA};
     public static final String[] FAMILIES_OF_STUDENT = {PERSONAL_DATA, EDUCATION_DATA};
+    public static final RandomData rand = new RandomData();
 
     public static void main(String[] args) {
         Configuration config = HBaseConfiguration.create();
@@ -40,7 +41,9 @@ public class Main {
             MyTable worker = new MyTable(connection, WORKER_NAME, FAMILIES_OF_WORKER);
             MyTable student = new MyTable(connection, STUDENT_NAME, FAMILIES_OF_STUDENT);
 //          * дозаписування даних у дві таблиці;
-//            worker
+            final String countWorker = String.valueOf(worker.count() + 1);
+            worker.put(countWorker, PERSONAL_DATA, NAME, rand.getRandomName());
+            worker.put(countWorker, PERSONAL_DATA, AGE, rand.getRandomWorkerAge());
 
         } catch (IOException ex) {
             ex.printStackTrace();

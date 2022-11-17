@@ -2,6 +2,7 @@ package lab6;
 
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.TableDescriptor;
 
 public class MyTable {
     private final TableName tableName;
@@ -10,7 +11,7 @@ public class MyTable {
     public MyTable(Connection connection, TableName tableName, String... families) {
         this.tableName = tableName;
         this.connection = connection;
-        Tables.createTable(tableName, families);
+        TableDescriptor table = Tables.createTable(tableName, families);
     }
 
     public MyTable(Connection connection, String tableName, String... families) {
@@ -39,5 +40,9 @@ public class MyTable {
 
     public void drop() {
         Tables.dropTable(connection, tableName);
+    }
+
+    public int count() {
+        return Tables.count(tableName, connection);
     }
 }

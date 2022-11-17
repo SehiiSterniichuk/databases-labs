@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomData {
-    private static final String[] names = {
+    public static final String[] names = {
             "Serhii",
             "Petro",
             "Bohdan",
@@ -18,7 +18,7 @@ public class RandomData {
             "Ira",
     };
 
-    private static final String[] subject = {
+    public static final String[] subject = {
             "Java",
             "C++",
             "Math",
@@ -26,28 +26,29 @@ public class RandomData {
             "Discrete Math"
     };
 
-    private static final Random rand = new Random();
+    public static final Random rand = new Random();
 
-    private String getRandomName() {
+    public String getRandomName() {
         int index = rand.nextInt(names.length);
         int randomNumber = rand.nextInt(10);
         return names[index] + randomNumber;
     }
 
-    private String getRandomSubject() {
+    public String getRandomSubject() {
         int index = rand.nextInt(subject.length);
         return subject[index];
     }
 
-    private String getRandomStudentAge() {
+    public String getRandomStudentAge() {
         return String.valueOf(17 + rand.nextInt(6));
     }
 
-    private String getRandomWorkerAge() {
+    public String getRandomWorkerAge() {
         return String.valueOf(19 + rand.nextInt(40));
     }
 
-    private String getRandomWorkerSalary() {
+    public String getRandomWorkerSalary() {
         return String.valueOf(500 + rand.nextInt(5000));
     }
+
 }

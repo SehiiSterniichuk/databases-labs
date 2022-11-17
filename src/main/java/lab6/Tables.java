@@ -96,6 +96,27 @@ public class Tables {
         return builder.toString();
     }
 
+    public static int count(TableName tableName, Connection connection) {
+        try (var table = connection.getTable(tableName)) {
+            return count(table);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int count(Table table) {
+        Scan scan = new Scan();
+        int counter = 0;
+        try (var scanner = table.getScanner(scan)) {
+            for (var result = scanner.next(); result != null; result = scanner.next()) {
+                counter++;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return counter;
+    }
+
     public static StringBuilder resultToString(Result result) {
         var builder = new StringBuilder();
         var row = Bytes.toString(result.getRow());
@@ -123,4 +144,6 @@ public class Tables {
         }
         return tableBuilder.build();
     }
+
+
 }
