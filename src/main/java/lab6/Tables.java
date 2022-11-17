@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class Tables {
-    public static void dropTable(Connection connection, TableName tableName){
+
+    public static void dropTable(Connection connection, TableName tableName) {
         try {
             dropTable(connection.getAdmin(), tableName);
         } catch (IOException e) {
@@ -17,8 +18,7 @@ public class Tables {
         }
     }
 
-
-    public static void dropTable(Admin admin, TableName tableName){
+    public static void dropTable(Admin admin, TableName tableName) {
         try {
             admin.disableTable(tableName);
             admin.deleteTable(tableName);
@@ -96,7 +96,7 @@ public class Tables {
         return builder.toString();
     }
 
-    public static StringBuilder resultToString(Result result){
+    public static StringBuilder resultToString(Result result) {
         var builder = new StringBuilder();
         var row = Bytes.toString(result.getRow());
         List<Cell> cells = result.listCells();
