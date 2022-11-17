@@ -1,11 +1,9 @@
 package lab6;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class RandomData {
-    public static final String[] names = {
+    public static final String[] NAMES = {
             "Serhii",
             "Petro",
             "Bohdan",
@@ -18,7 +16,7 @@ public class RandomData {
             "Ira",
     };
 
-    public static final String[] subject = {
+    public static final String[] SUBJECTS = {
             "Java",
             "C++",
             "Math",
@@ -26,17 +24,26 @@ public class RandomData {
             "Discrete Math"
     };
 
+    public static final String[] POSITIONS = {
+            "Developer",
+            "Designer",
+            "Team Lead",
+            "Manager",
+            "HR",
+            "CEO"
+    };
+
     public static final Random rand = new Random();
 
     public String getRandomName() {
-        int index = rand.nextInt(names.length);
+        int index = rand.nextInt(NAMES.length);
         int randomNumber = rand.nextInt(10);
-        return names[index] + randomNumber;
+        return NAMES[index] + randomNumber;
     }
 
     public String getRandomSubject() {
-        int index = rand.nextInt(subject.length);
-        return subject[index];
+        int index = rand.nextInt(SUBJECTS.length);
+        return SUBJECTS[index];
     }
 
     public String getRandomStudentAge() {
@@ -49,6 +56,11 @@ public class RandomData {
 
     public String getRandomWorkerSalary() {
         return String.valueOf(500 + rand.nextInt(5000));
+    }
+
+    public String getRandomWorkerPosition(){
+        int index = rand.nextInt(POSITIONS.length);
+        return POSITIONS[index];
     }
 
 }

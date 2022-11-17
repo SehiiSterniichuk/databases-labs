@@ -44,6 +44,8 @@ public class Main {
             final String countWorker = String.valueOf(worker.count() + 1);
             worker.put(countWorker, PERSONAL_DATA, NAME, rand.getRandomName());
             worker.put(countWorker, PERSONAL_DATA, AGE, rand.getRandomWorkerAge());
+            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, rand.getRandomWorkerSalary());
+            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, rand.getRandomWorkerPosition());
 
         } catch (IOException ex) {
             ex.printStackTrace();
