@@ -10,12 +10,12 @@ import java.io.IOException;
 /*
 * Встановіть бібліотеку мови програмування на ваш вибір і реалізуйте
 функції:
-* створення тестових двох таблиць і двох сімейств стовпців;
-* дозаписування даних у дві таблиці;
-* зчитування даних з двох таблиць;
-* оновлення даних у двох таблицях;
-* видалення даних з двох таблиць;
-* видалення таблиць.
+* 1 створення тестових двох таблиць і двох сімейств стовпців;
+* 2 дозаписування даних у дві таблиці;
+* 3 зчитування даних з двох таблиць;
+* 4 оновлення даних у двох таблицях;
+* 5 видалення даних з двох таблиць;
+* 6 видалення таблиць.
 * */
 public class Main {
 
@@ -41,18 +41,57 @@ public class Main {
             MyTable worker = new MyTable(connection, WORKER_NAME, FAMILIES_OF_WORKER);
             MyTable student = new MyTable(connection, STUDENT_NAME, FAMILIES_OF_STUDENT);
 //          * дозаписування даних у дві таблиці;
+            String workerName = rand.getRandomName();
+            String workerAge = rand.getRandomWorkerAge();
+            String workerSalary = rand.getRandomWorkerSalary();
+            String workerPosition = rand.getRandomWorkerPosition();
+            System.out.printf("""
+                            Data will be stored in worker table:
+                            name: %s\tage: %s\tsalary: %s\tposition: %s
+                            """,
+                    workerName, workerAge, workerSalary, workerPosition);
+
             final String countWorker = String.valueOf(worker.count() + 1);
-            worker.put(countWorker, PERSONAL_DATA, NAME, rand.getRandomName());
-            worker.put(countWorker, PERSONAL_DATA, AGE, rand.getRandomWorkerAge());
-            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, rand.getRandomWorkerSalary());
-            worker.put(countWorker, PROFESSIONAL_DATA, POSITION, rand.getRandomWorkerPosition());
+            worker.put(countWorker, PERSONAL_DATA, NAME, workerName);
+            worker.put(countWorker, PERSONAL_DATA, AGE, workerAge);
+            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, workerSalary);
+            worker.put(countWorker, PROFESSIONAL_DATA, POSITION, workerPosition);
+
+            String studentName = rand.getRandomName();
+            String studentAge = rand.getRandomStudentAge();
+            String averageGrade = rand.getRandomAverageGrade();
+            String bestSubject = rand.getRandomSubject();
+            System.out.printf("""
+                            Data will be stored in student table:
+                            name: %s\tage: %s\tsalary: %s\tposition: %s
+                            """,
+                    studentName, studentAge, averageGrade, bestSubject);
 
             final String countStudent = String.valueOf(student.count() + 1);
-            student.put(countStudent, PERSONAL_DATA, NAME, rand.getRandomName());
-            student.put(countStudent, PERSONAL_DATA, AGE, rand.getRandomStudentAge());
-            student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, rand.getRandomAverageGrade());
-            student.put(countStudent, EDUCATION_DATA, BEST_SUBJECT, rand.getRandomSubject());
+            student.put(countStudent, PERSONAL_DATA, NAME, studentName);
+            student.put(countStudent, PERSONAL_DATA, AGE, studentAge);
+            student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, averageGrade);
+            student.put(countStudent, EDUCATION_DATA, BEST_SUBJECT, bestSubject);
+//          * зчитування даних з двох таблиць;
 
+            //сканування
+            System.out.println("Scan result of worker");
+            String scanOfWorker = worker.scan();
+            System.out.println(scanOfWorker);
+
+            System.out.println("Scan result of student");
+            String scanOfStudent = student.scan();
+            System.out.println(scanOfStudent);
+            // get запит
+            System.out.println("Get result of worker");
+            String lastInstanceRowOfWorker = String.valueOf(worker.count());
+            String instanceOfWorker = worker.get(lastInstanceRowOfWorker);
+            System.out.println(instanceOfWorker);
+
+            System.out.println("Get result of student");
+            String lastInstanceRowOfStudent = String.valueOf(student.count());
+            String instanceOfStudent = worker.get(lastInstanceRowOfStudent);
+            System.out.println(instanceOfStudent);
 
         } catch (IOException ex) {
             ex.printStackTrace();
