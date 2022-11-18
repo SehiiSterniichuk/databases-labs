@@ -37,10 +37,10 @@ public class Main {
     public static void main(String[] args) {
         Configuration config = HBaseConfiguration.create();
         try (Connection connection = ConnectionFactory.createConnection(config)) {
-//          * створення тестових двох таблиць і двох сімейств стовпців;
+//          1 створення тестових двох таблиць і двох сімейств стовпців;
             MyTable worker = new MyTable(connection, WORKER_NAME, FAMILIES_OF_WORKER);
             MyTable student = new MyTable(connection, STUDENT_NAME, FAMILIES_OF_STUDENT);
-//          * дозаписування даних у дві таблиці;
+//          2 дозаписування даних у дві таблиці;
             String workerName = rand.getRandomName();
             String workerAge = rand.getRandomWorkerAge();
             String workerSalary = rand.getRandomWorkerSalary();
@@ -63,7 +63,7 @@ public class Main {
             String bestSubject = rand.getRandomSubject();
             System.out.printf("""
                             Data will be stored in student table:
-                            name: %s\tage: %s\tsalary: %s\tposition: %s
+                            name: %s\tage: %s\tgrade: %s\tbest subject: %s
                             """,
                     studentName, studentAge, averageGrade, bestSubject);
 
@@ -72,10 +72,10 @@ public class Main {
             student.put(countStudent, PERSONAL_DATA, AGE, studentAge);
             student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, averageGrade);
             student.put(countStudent, EDUCATION_DATA, BEST_SUBJECT, bestSubject);
-//          * зчитування даних з двох таблиць;
+//          3 зчитування даних з двох таблиць;
 
             //сканування
-            System.out.println("Scan result of worker");
+            System.out.println("\nScan result of worker");
             String scanOfWorker = worker.scan();
             System.out.println(scanOfWorker);
 
@@ -93,6 +93,18 @@ public class Main {
             String instanceOfStudent = worker.get(lastInstanceRowOfStudent);
             System.out.println(instanceOfStudent);
 
+//          * 4 оновлення даних у двох таблицях;
+            var newSalaryOfLastWorker = rand.getRandomWorkerSalary();
+            System.out.printf("New salary of last worker:\t%s\n", newSalaryOfLastWorker);
+            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, newSalaryOfLastWorker);
+            instanceOfWorker = worker.get(lastInstanceRowOfWorker);
+            System.out.printf("Updated worker instance:\n%s", instanceOfWorker);
+
+            var newAverageGradeOfStudent = rand.getRandomAverageGrade();
+            System.out.printf("\nNew average grade of last student:\t%s\n", newAverageGradeOfStudent);
+            student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, newAverageGradeOfStudent);
+            instanceOfStudent = student.get(lastInstanceRowOfStudent);
+            System.out.printf("Updated student instance:\n%s", instanceOfStudent);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
