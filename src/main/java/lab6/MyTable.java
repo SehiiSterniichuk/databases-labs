@@ -54,12 +54,10 @@ public class MyTable {
         Tables.drop(connection, tableName);
     }
 
-
     public boolean exist(){
         return Tables.exists(connection, tableName);
     }
 
-    @SuppressWarnings("unused")
     public int count() {
         return Tables.count(tableName, connection);
     }

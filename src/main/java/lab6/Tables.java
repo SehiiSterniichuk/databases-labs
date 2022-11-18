@@ -11,61 +11,6 @@ import java.util.List;
 
 public class Tables {
 
-    public static void drop(Connection connection, TableName tableName) {
-        try {
-            drop(connection.getAdmin(), tableName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void drop(Admin admin, TableName tableName) {
-        try {
-            admin.disableTable(tableName);
-            admin.deleteTable(tableName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static boolean exists(Connection connection, TableName tableName){
-        try {
-            return connection.getAdmin().tableExists(tableName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static void delete(Connection connection, TableName tableName, byte[] row, byte[] family, byte[] column) {
-        Delete delete = new Delete(row);
-        delete.addColumn(family, column);
-        delete(connection, tableName, delete);
-    }
-
-    public static void delete(Connection connection, TableName tableName, byte[] row) {
-        Delete delete = new Delete(row);
-        delete(connection, tableName, delete);
-    }
-
-    public static void delete(Connection connection, TableName tableName, Delete delete) {
-        try (var table = connection.getTable(tableName)) {
-            table.delete(delete);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static Result get(Connection connection, TableName tableName, byte[] row) {
-        Result result;
-        try (var table = connection.getTable(tableName)) {
-            Get get = new Get(row);
-            result = table.get(get);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
-    }
-
     public static void put(Connection connection, TableName tableName, String row, String family, String column, String value) {
         put(connection, tableName, row.getBytes(), family.getBytes(), column.getBytes(), value.getBytes());
     }
@@ -82,6 +27,17 @@ public class Tables {
         Put p = new Put(row);
         p.addColumn(family, column, value);
         table.put(p);
+    }
+
+    public static Result get(Connection connection, TableName tableName, byte[] row) {
+        Result result;
+        try (var table = connection.getTable(tableName)) {
+            Get get = new Get(row);
+            result = table.get(get);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 
     public static String scan(TableName tableName, Connection connection) {
@@ -103,6 +59,50 @@ public class Tables {
             throw new RuntimeException(e);
         }
         return builder.toString();
+    }
+
+    public static void delete(Connection connection, TableName tableName, byte[] row, byte[] family, byte[] column) {
+        Delete delete = new Delete(row);
+        delete.addColumn(family, column);
+        delete(connection, tableName, delete);
+    }
+
+    public static void delete(Connection connection, TableName tableName, byte[] row) {
+        Delete delete = new Delete(row);
+        delete(connection, tableName, delete);
+    }
+
+    public static void delete(Connection connection, TableName tableName, Delete delete) {
+        try (var table = connection.getTable(tableName)) {
+            table.delete(delete);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean exists(Connection connection, TableName tableName){
+        try {
+            return connection.getAdmin().tableExists(tableName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void drop(Connection connection, TableName tableName) {
+        try {
+            drop(connection.getAdmin(), tableName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void drop(Admin admin, TableName tableName) {
+        try {
+            admin.disableTable(tableName);
+            admin.deleteTable(tableName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static int count(TableName tableName, Connection connection) {

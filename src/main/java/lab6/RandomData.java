@@ -67,5 +67,4 @@ public class RandomData {
     public String getRandomAverageGrade(){
         return String.valueOf(60 + rand.nextInt(41));
     }
-
 }
