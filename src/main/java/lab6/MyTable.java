@@ -6,6 +6,7 @@ import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.TableDescriptor;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MyTable {
     private final TableName tableName;
@@ -55,6 +56,23 @@ public class MyTable {
 
     public int count() {
         return Tables.count(tableName, connection);
+    }
+
+    public String getCount() {
+        return String.valueOf(Tables.count(tableName, connection));
+    }
+
+    public List<String> getListOfRows(){
+        return Tables.getListOfRow(tableName, connection);
+    }
+
+    public int lastIndex(){
+        var max = getListOfRows().stream().mapToInt(Integer::valueOf).max();
+        return max.orElse(0);
+    }
+
+    public String getLastIndex(){
+        return String.valueOf(lastIndex());
     }
 
     @Override

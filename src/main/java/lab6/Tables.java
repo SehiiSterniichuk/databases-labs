@@ -6,6 +6,7 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tables {
@@ -115,6 +116,27 @@ public class Tables {
             throw new RuntimeException(e);
         }
         return counter;
+    }
+
+    public static List<String> getListOfRow(TableName tableName, Connection connection) {
+        try (var table = connection.getTable(tableName)) {
+            return getListOfRow(table);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<String> getListOfRow(Table table){
+        Scan scan = new Scan();
+        List<String> rows = new ArrayList<>();
+        try (var scanner = table.getScanner(scan)) {
+            for (var result = scanner.next(); result != null; result = scanner.next()) {
+                rows.add(Bytes.toString(result.getRow()));
+            }
+            return rows;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static StringBuilder resultToString(Result result) {
