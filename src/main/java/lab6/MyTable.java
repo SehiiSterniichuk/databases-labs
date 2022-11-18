@@ -31,7 +31,7 @@ public class MyTable {
     }
 
     public String scan() {
-        return Tables.scanTable(tableName, connection);
+        return Tables.scan(tableName, connection);
     }
 
     public void put(String row, String family, String column, String value) {
@@ -51,13 +51,20 @@ public class MyTable {
     }
 
     public void drop() {
-        Tables.dropTable(connection, tableName);
+        Tables.drop(connection, tableName);
     }
 
+
+    public boolean exist(){
+        return Tables.exists(connection, tableName);
+    }
+
+    @SuppressWarnings("unused")
     public int count() {
         return Tables.count(tableName, connection);
     }
 
+    @SuppressWarnings("unused")
     public String getCount() {
         return String.valueOf(Tables.count(tableName, connection));
     }

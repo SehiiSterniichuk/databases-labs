@@ -70,10 +70,16 @@ public class Main {
             scan(worker);
             scan(student);
 
+//          * 6 видалення таблиць.
+            worker.drop();
+            System.out.println("Worker exists:\t" + worker.exist());
+            student.drop();
+            System.out.println("Student exists:\t" + student.exist());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
+
 
     private static void printNewData(String tableName, String... data) {
         var builder = new StringBuilder(String.format("Data will be stored in %s table:\n", tableName));

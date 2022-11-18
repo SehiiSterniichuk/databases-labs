@@ -11,18 +11,26 @@ import java.util.List;
 
 public class Tables {
 
-    public static void dropTable(Connection connection, TableName tableName) {
+    public static void drop(Connection connection, TableName tableName) {
         try {
-            dropTable(connection.getAdmin(), tableName);
+            drop(connection.getAdmin(), tableName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void dropTable(Admin admin, TableName tableName) {
+    public static void drop(Admin admin, TableName tableName) {
         try {
             admin.disableTable(tableName);
             admin.deleteTable(tableName);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean exists(Connection connection, TableName tableName){
+        try {
+            return connection.getAdmin().tableExists(tableName);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -76,15 +84,15 @@ public class Tables {
         table.put(p);
     }
 
-    public static String scanTable(TableName tableName, Connection connection) {
+    public static String scan(TableName tableName, Connection connection) {
         try (var table = connection.getTable(tableName)) {
-            return scanTable(table);
+            return scan(table);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static String scanTable(Table table) {
+    public static String scan(Table table) {
         Scan scan = new Scan();
         var builder = new StringBuilder("\n");
         try (var scanner = table.getScanner(scan)) {
