@@ -4,8 +4,10 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Scan;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /*
 * Встановіть бібліотеку мови програмування на ваш вибір і реалізуйте
@@ -33,6 +35,7 @@ public class Main {
     public static final String[] FAMILIES_OF_WORKER = {PERSONAL_DATA, PROFESSIONAL_DATA};
     public static final String[] FAMILIES_OF_STUDENT = {PERSONAL_DATA, EDUCATION_DATA};
     public static final RandomData rand = new RandomData();
+    public static final Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         Configuration config = HBaseConfiguration.create();
@@ -75,38 +78,79 @@ public class Main {
 //          3 зчитування даних з двох таблиць;
 
             //сканування
-            System.out.println("\nScan result of worker");
-            String scanOfWorker = worker.scan();
-            System.out.println(scanOfWorker);
-
-            System.out.println("Scan result of student");
-            String scanOfStudent = student.scan();
-            System.out.println(scanOfStudent);
+            scan(worker);
+            scan(student);
             // get запит
-            System.out.println("Get result of worker");
-            String lastInstanceRowOfWorker = String.valueOf(worker.count());
-            String instanceOfWorker = worker.get(lastInstanceRowOfWorker);
-            System.out.println(instanceOfWorker);
-
-            System.out.println("Get result of student");
-            String lastInstanceRowOfStudent = String.valueOf(student.count());
-            String instanceOfStudent = worker.get(lastInstanceRowOfStudent);
-            System.out.println(instanceOfStudent);
+            get(worker);
+            get(student);
 
 //          * 4 оновлення даних у двох таблицях;
-            var newSalaryOfLastWorker = rand.getRandomWorkerSalary();
-            System.out.printf("New salary of last worker:\t%s\n", newSalaryOfLastWorker);
-            worker.put(countWorker, PROFESSIONAL_DATA, SALARY, newSalaryOfLastWorker);
-            instanceOfWorker = worker.get(lastInstanceRowOfWorker);
-            System.out.printf("Updated worker instance:\n%s", instanceOfWorker);
+            updateLastInstance(worker, PROFESSIONAL_DATA, SALARY, rand.getRandomWorkerSalary());
+            updateLastInstance(student, EDUCATION_DATA, AVERAGE_GRADE, rand.getRandomAverageGrade());
 
-            var newAverageGradeOfStudent = rand.getRandomAverageGrade();
-            System.out.printf("\nNew average grade of last student:\t%s\n", newAverageGradeOfStudent);
-            student.put(countStudent, EDUCATION_DATA, AVERAGE_GRADE, newAverageGradeOfStudent);
-            instanceOfStudent = student.get(lastInstanceRowOfStudent);
-            System.out.printf("Updated student instance:\n%s", instanceOfStudent);
+//            * 5 видалення даних з двох таблиць;
+            System.out.print("Do you want to delete some rows from hbase?\nYes - 1\nEnter:");
+            if ("1".equals(sc.nextLine())) {
+                System.out.print("Which row from worker do you want to delete?\nEnter:");
+                String deleteRow = sc.nextLine();
+                worker.delete(deleteRow);
+                System.out.println(worker.scan());
+                System.out.print("Which row from student do you want to delete?\nEnter:");
+                deleteRow = sc.nextLine();
+                student.delete(deleteRow);
+                System.out.println(student.scan());
+            }
+            System.out.print("Do you want to delete some specific cells from hbase?\nYes - 1\nEnter:");
+            if ("1".equals(sc.nextLine())) {
+                System.out.print("Which row from worker do you want to manage?\nEnter:");
+                String row = sc.nextLine();
+                System.out.println(worker.get(row));
+                System.out.print("Which column family?\nEnter:");
+                String family = sc.nextLine();
+                System.out.print("Which column?\nEnter:");
+                String column = sc.nextLine();
+                worker.delete(row, family, column);
+                System.out.println(worker.scan());
+
+
+                System.out.print("Which row from student do you want to delete?\nEnter:");
+                row = sc.nextLine();
+                System.out.println(worker.get(row));
+                System.out.print("Which column family?\nEnter:");
+                family = sc.nextLine();
+                System.out.print("Which column?\nEnter:");
+                column = sc.nextLine();
+                worker.delete(row, family, column);
+                System.out.println(worker.scan());
+            }
+
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static void scan(MyTable table) {
+        System.out.println("\nScan result of " + table);
+        String scan = table.scan();
+        System.out.println(scan);
+    }
+
+    public static void get(MyTable table) {
+        System.out.println("Get result of " + table);
+        String lastInstanceRowOfTable = String.valueOf(table.count());
+        String instance = table.get(lastInstanceRowOfTable);
+        System.out.println(instance);
+    }
+
+    public static void updateLastInstance(MyTable table, String family, String column, String value) {
+        String lastInstanceRowOfWorker = String.valueOf(table.count());
+        update(table, lastInstanceRowOfWorker, family, column, value);
+    }
+
+    public static void update(MyTable table, String row, String family, String column, String value) {
+        System.out.printf("New " + column + " of " + row + "row in the " + table + ":\t%s\n", value);
+        table.put(row, family, column, value);
+        var instanceOfWorker = table.get(row);
+        System.out.printf("Updated " + table + " instance:\n%s", instanceOfWorker);
     }
 }

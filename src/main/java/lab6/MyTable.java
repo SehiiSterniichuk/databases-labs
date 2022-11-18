@@ -56,4 +56,9 @@ public class MyTable {
     public int count() {
         return Tables.count(tableName, connection);
     }
+
+    @Override
+    public String toString() {
+        return tableName.getNameAsString();
+    }
 }
