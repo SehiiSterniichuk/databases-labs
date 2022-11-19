@@ -1,4 +1,4 @@
-package lab6;
+package lab6.controller;
 
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.TableName;

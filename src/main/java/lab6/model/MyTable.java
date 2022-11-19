@@ -1,5 +1,6 @@
-package lab6;
+package lab6.model;
 
+import lab6.controller.Tables;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;

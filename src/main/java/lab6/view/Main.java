@@ -1,5 +1,7 @@
-package lab6;
+package lab6.view;
 
+import lab6.controller.RandomData;
+import lab6.model.MyTable;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Connection;
@@ -70,7 +72,7 @@ public class Main {
             delete(worker, worker.getLastIndex(), PROFESSIONAL_DATA, SALARY);
             delete(student, student.getLastIndex(), EDUCATION_DATA, BEST_SUBJECT);
 
-//          * 6 видалення таблиць.
+////          * 6 видалення таблиць.
             drop(worker);
             drop(student);
         } catch (IOException ex) {
